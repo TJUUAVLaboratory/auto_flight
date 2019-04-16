@@ -1,0 +1,41 @@
+<launch>
+    <!-- vim: set ft=xml noet : -->
+    <!-- example launch script for PX4 based FCU's -->
+    <!-- fcu　连接方式　USB口　ttyACM0　　　　　上面的数传串口　T1/T2   ttyUSB0 因为板载的FTDI 接在TK1的ttyUSB0 -->
+    <!-- <arg name="fcu_url" default="/dev/ttyACM0:921600" /> -->
+    <!-- <arg name="fcu_url" default="/dev/ttyUSB0:57600" /> -->
+    <!--<arg name="gcs_url" default="udp://:14540@127.0.0.1:14550" />-->
+    <!-- <arg name="fcu_url" default="udp://:14540@127.0.0.1:14557"/> -->
+    <!--<arg name="fcu_url" default="udp://:14540@172.20.8.147:14560"/>-->
+    <arg name="fcu_url" default="/dev/ttyUSB0:921600" />
+    <arg name="gcs_url" default="" />
+    <arg name="tgt_system" default="1" />
+    <arg name="tgt_component" default="1" />
+    <arg name="log_output" default="screen" />
+    <include file="$(find mavros)/launch/node.launch">
+        <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
+        <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
+        <arg name="fcu_url" value="$(arg fcu_url)" />
+        <arg name="gcs_url" value="$(arg gcs_url)" />
+        <arg name="tgt_system" value="$(arg tgt_system)" />
+        <arg name="tgt_component" value="$(arg tgt_component)" />
+        <arg name="log_output" value="$(arg log_output)" />
+        <!--<arg name="latitude_end" default="100" /><arg name="longitude_end" default="200" /><arg name="altitude_end" default="300" />-->
+    </include>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find auto_flight)/launch/guiji_map.rviz"/>
+    <node pkg="auto_flight" type="offline_pclmap_test" name="offline_pclmap_test" clear_params="true">
+        <param name="pcl_file" type="string" value="$(find auto_flight)/mapdata/result3.pcd"/>
+    </node>
+    <node pkg="auto_flight" type="setting_destination" name="setting_destination" clear_params="true">
+        <param name="destination_x" type="double" value="30.0"/>
+        <param name="destination_y" type="double" value="-15.0"/>
+        <param name="destination_z" type="double" value="5.0"/>
+    </node>
+    <node pkg="auto_flight" type="trajplan_test" name="trajplan_test" clear_params="true" output="screen">
+        <param name="safe_dis" type="double" value="2.1"/>
+        <param name=" wp_last_time" type="double" value="10.0"/>
+        <param name=" takeoff_height" type="double" value="5.0"/>
+        <param name=" traj_lib" type="string" value="$(find auto_flight)/trajlib"/>
+        <param name="cam_params" type="string" value="$(find auto_flight)/default.yaml"/>
+    </node>
+</launch>

@@ -1,0 +1,5 @@
+<launch>
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find auto_flight)/launch/guiji_map.rviz"/>
+	
+</launch>

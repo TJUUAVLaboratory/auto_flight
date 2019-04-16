@@ -1,0 +1,15 @@
+#auto_flight_state
+
+std_msgs/Header header
+float64 traj_point_distance
+float64 closest_traj_point_distance
+int32 last_traj
+bool if_replan
+int32 current_traj
+int32 way_point_i
+geometry_msgs/PoseStamped way_point
+float64 plan_fly_yaw
+geometry_msgs/PoseStamped current_pose
+float64 true_fly_yaw
+float64 current_point_distance
+float64 closest_current_point_distance

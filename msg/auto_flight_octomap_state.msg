@@ -1,0 +1,6 @@
+#auto_flight_octomap
+
+std_msgs/Header header
+float64 current_octomap_size
+float64 building_octomap_size
+float64 current_octomap_exist_time
